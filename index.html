@@ -15,13 +15,13 @@
   <nav class="navbar">
     <h1>Weather Dashboard</h1>
   </nav>
-  <div class="container float-start w-25">
+  <div class="container row float-start w-25">
     <label for="search-input">Enter City:</label>
     <input type="text" class="form-control" id="search-input">
     <button type="submit" id="search-btn">Search</button>
   </div>
 
-  <div>
+  <div class="row">
     <ul id="searched-cities"></ul>
     <li>Random</li>
     <li>Random</li>
@@ -30,16 +30,10 @@
   </div>
 
   <div class="container float-end">
-    <div id="current-forecast">
-      <h2>Current Forecast:</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam voluptatum quod sed neque, saepe cupiditate
-        doloribus aliquid aut suscipit esse modi nemo, velit iure veniam ex ut nihil. Ipsam, excepturi.</p>
-    </div>
+    <div id="current-forecast"></div>
   </div>
-  <div>
-    <div id="weekly-forecast">
-      <h2>Five Day Forecast</h2>
-    </div>
+  <div id="five-day-forecast">
+    <h2>Five Day Forecast</h2>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="

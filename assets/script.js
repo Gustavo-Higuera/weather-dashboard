@@ -1,5 +1,14 @@
-var searchBtn = $("#search-btn");
+var searchBtn = document.getElementById("search-btn");
 var apiKey = "d4f0a867ce4cfa7304c028826c6a3551";
+
+
+searchBtn.addEventListener("click", formHandler);
+
+function formHandler (){
+  var cityInput = document.getElementById("search-input").value;
+
+  getCity(cityInput);
+};
 
 function getCity(city){
   var geocodeUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`
@@ -18,7 +27,7 @@ function getCity(city){
   }
 
     function getWeather(lat, lon){
-      var weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
+      var weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`
 
       fetch(weatherUrl)
       .then(function (response) {
@@ -28,13 +37,28 @@ function getCity(city){
       })
       .then(function (data) {
         console.log(data);
+
+        displayWeather(data);
       });
     }
 
-    searchBtn.on("click", function(){
-      var cityInput = $(this).siblings("#search-input").val();
+    function displayWeather (data){
+      var currentForecastEl = $("#current-forecast");
+      currentForecastEl.addClass("current-forecast")
+      currentForecastEl.append($("<h2>Current Weather</h2>"));
 
-      getCity(cityInput);
-    });
+      var cityName = data.name;
+      currentForecastEl.append($(`<h3>${cityName}</h3>`));
+
+      var currentTemp = data.main.temp;
+      currentForecastEl.append($(`<p>Temp: ${currentTemp}&#8457</p>`));
+
+      var currentWind = data.wind.speed;
+      currentForecastEl.append($(`<p>Wind: ${currentWind}mph</p>`));
+
+      var currentHumidity = data.main.humidity;
+      currentForecastEl.append($(`<p>Humidity: ${currentHumidity}%</p>`));
+    }
+
 
 
