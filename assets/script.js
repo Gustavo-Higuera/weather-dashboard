@@ -13,21 +13,23 @@ searchBtn.addEventListener("click", formHandler);
 function formHandler() {
   var cityInput = document.getElementById("search-input").value;
 
-  searchedCities.push(cityInput)
+
+  if (!searchedCities.includes(cityInput)) {
+    searchedCities.push(cityInput)
+  }
   localStorage.setItem('searchedCities', JSON.stringify(searchedCities))
   getCity(cityInput);
 };
 
-function displaySearchedHistory(){
+function displaySearchedHistory() {
   //Loop through searchedCities array
-  searchedCities.map(function(city) {
+  searchedCities.map(function (city) {
     console.log(city)
 
     //create empty button
     var btn = $('<button/>')
     //display text on the buttons
     btn.text(city)
-    
     searchHistoryBtns.append(btn)
 
   })
@@ -103,8 +105,17 @@ function displayWeather(data, uv) {
   currentForecastEl.append($(`<p>Humidity: ${currentHumidity}%</p>`));
 
   var currentUV = uv.result.uv;
-  console.log(currentUV);
+  var currentUVEl = document.createElement("p");
+  currentUVEl.textContent = `UV: ${currentUV}`
+  currentForecastEl.append(currentUVEl)
 
+  if (currentUV <= 2.9) {
+    currentUVEl.classList.add("bg-success");
+  } else if (currentUV > 2.9 && currentUV <= 5.9) {
+    currentUVEl.classList.add("bg-warning");
+  } else {
+    currentUVEl.classList.add("bg-danger");
+  }
 }
 
 function getFiveDayWeather(lat, lon) {
@@ -116,6 +127,7 @@ function getFiveDayWeather(lat, lon) {
       return response.json();
     })
     .then(function (data) {
+      console.log(data);
       displayFiveDayWeather(data);
     });
 }
@@ -128,21 +140,73 @@ function displayFiveDayWeather(data) {
   var fiveDayHeader = document.createElement("h2");
   fiveDayEl.appendChild(fiveDayHeader).textContent = "Five Day Forecast";
 
-  for (let i = 0; i < 5; i++) {
+  // creating this array objects because the api returns 40 results, 5 days w/3 hour increments... only need the 5 day data
+
+  var forecastArr = [{
+    date: data.list[1].dt_txt,
+    icon: data.list[1].weather[0].icon,
+    temp: data.list[1].main.temp,
+    wind: data.list[1].wind.speed,
+    humidity: data.list[1].main.humidity,
+  },
+  {
+    date: data.list[9].dt_txt,
+    icon: data.list[9].weather[0].icon,
+    temp: data.list[9].main.temp,
+    wind: data.list[9].wind.speed,
+    humidity: data.list[9].main.humidity,
+  },
+  {
+    date: data.list[17].dt_txt,
+    icon: data.list[17].weather[0].icon,
+    temp: data.list[17].main.temp,
+    wind: data.list[17].wind.speed,
+    humidity: data.list[17].main.humidity,
+  },
+  {
+    date: data.list[25].dt_txt,
+    icon: data.list[25].weather[0].icon,
+    temp: data.list[25].main.temp,
+    wind: data.list[25].wind.speed,
+    humidity: data.list[25].main.humidity,
+  },
+  {
+    date: data.list[33].dt_txt,
+    icon: data.list[33].weather[0].icon,
+    temp: data.list[33].main.temp,
+    wind: data.list[33].wind.speed,
+    humidity: data.list[33].main.humidity,
+  }];
+
+  for (let i = 0; i < forecastArr.length; i++) {
     var fiveForecastCol = document.createElement("div");
     fiveForecastCol.classList = "card col-12 col-sm-6 col-lg-4 mb-3 bg-primary";
     fiveDayEl.appendChild(fiveForecastCol);
 
     var eachDayForecastEl = document.createElement("div");
-    eachDayForecastEl.classList = "w-100 h-100 bg-light";
+    eachDayForecastEl.classList = "w-100 h-100 bg-secondary";
     fiveForecastCol.appendChild(eachDayForecastEl);
 
+    var eachDayDate = forecastArr[i].date;
+    var eachDayDateEl = document.createElement("p");
+    eachDayForecastEl.appendChild(eachDayDateEl).textContent = eachDayDate;
 
-    var fiveDayTemp = data.list[i].main.temp;
+    var eachDayIconEl = document.createElement("img");
+    eachDayIconEl.setAttribute("src", "https://openweathermap.org/img/wn/" + forecastArr[i].icon + "@2x.png")
+    eachDayForecastEl.appendChild(eachDayIconEl);
+
+
+    var fiveDayTemp = forecastArr[i].temp;
     var fiveDayTempEl = document.createElement("p");
-    eachDayForecastEl.appendChild(fiveDayTempEl).textContent = fiveDayTemp;
+    eachDayForecastEl.appendChild(fiveDayTempEl).textContent = `Temp: ${fiveDayTemp}`;
 
-    console.log(fiveDayTemp);
+    var fiveDayWind = forecastArr[i].wind;
+    var fiveDayWindEl = document.createElement("p");
+    eachDayForecastEl.appendChild(fiveDayWindEl).textContent = `Wind: ${fiveDayWind}mph`;
+
+    var fiveDayHumidity = forecastArr[i].humidity;
+    var fiveDayHumidityEl = document.createElement("p");
+    eachDayForecastEl.appendChild(fiveDayHumidityEl).textContent = `Humidity: ${fiveDayHumidity}%`;
 
   }
 }
