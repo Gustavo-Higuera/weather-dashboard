@@ -16,8 +16,15 @@ function formHandler() {
 
   if (!searchedCities.includes(cityInput)) {
     searchedCities.push(cityInput)
+
+    displaySearchedHistory();
+
   }
   localStorage.setItem('searchedCities', JSON.stringify(searchedCities))
+
+  // this will clear out the weather report div whenever a new city is searched
+  weatherReportEl.empty();
+  
   getCity(cityInput);
 };
 
