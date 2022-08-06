@@ -22,9 +22,7 @@ function formHandler() {
   }
   localStorage.setItem('searchedCities', JSON.stringify(searchedCities))
 
-  // this will clear out the weather report div whenever a new city is searched
-  weatherReportEl.empty();
-  
+
   getCity(cityInput);
 };
 
@@ -34,13 +32,20 @@ function displaySearchedHistory() {
     console.log(city)
 
     //create empty button
-    var btn = $('<button/>')
+    var btn = $('<button class="searched-city-btn"/>')
+    btn.data("city", city);
     //display text on the buttons
     btn.text(city)
     searchHistoryBtns.append(btn)
 
   })
 }
+
+$(document).on("click", ".searched-city-btn", function(){
+
+  var city = $(this).data("city");
+  getCity(city);
+})
 
 function getCity(city) {
   var geocodeUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`
@@ -92,6 +97,8 @@ function getUVIndex(lat, lon) {
 
 function displayWeather(data, uv) {
   var currentForecastEl = $("#current-forecast");
+  currentForecastEl.empty();
+
   currentForecastEl.addClass("current-forecast row col-md-8")
 
   var cityName = data.name;
@@ -143,6 +150,7 @@ function getFiveDayWeather(lat, lon) {
 
 function displayFiveDayWeather(data) {
   var fiveDayEl = document.getElementById("five-day-forecast");
+  fiveDayEl.innerHTML = ""
 
   var fiveDayHeader = document.createElement("h2");
   fiveDayEl.appendChild(fiveDayHeader).textContent = "Five Day Forecast";
