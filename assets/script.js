@@ -27,6 +27,7 @@ function formHandler() {
 };
 
 function displaySearchedHistory() {
+  searchHistoryBtns.empty()
   //Loop through searchedCities array
   searchedCities.map(function (city) {
     console.log(city)
@@ -41,7 +42,7 @@ function displaySearchedHistory() {
   })
 }
 
-$(document).on("click", ".searched-city-btn", function(){
+$(document).on("click", ".searched-city-btn", function () {
 
   var city = $(this).data("city");
   getCity(city);
