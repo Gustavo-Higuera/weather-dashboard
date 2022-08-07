@@ -15,10 +15,13 @@ function formHandler() {
 
 
   if (!searchedCities.includes(cityInput)) {
-    searchedCities.push(cityInput)
+    if (!cityInput.trim() || !cityInput) {
+      alert("Please enter a city!");
+    } else {
+      searchedCities.push(cityInput)
 
-    displaySearchedHistory();
-
+      displaySearchedHistory();
+    }
   }
   localStorage.setItem('searchedCities', JSON.stringify(searchedCities))
 
@@ -159,39 +162,39 @@ function displayFiveDayWeather(data) {
   // creating this array objects because the api returns 40 results, 5 days w/3 hour increments... only need the 5 day data
 
   var forecastArr = [{
-    date: data.list[1].dt_txt,
-    icon: data.list[1].weather[0].icon,
-    temp: data.list[1].main.temp,
-    wind: data.list[1].wind.speed,
-    humidity: data.list[1].main.humidity,
+    date: data.list[5].dt_txt,
+    icon: data.list[5].weather[0].icon,
+    temp: data.list[5].main.temp,
+    wind: data.list[5].wind.speed,
+    humidity: data.list[5].main.humidity,
   },
   {
-    date: data.list[9].dt_txt,
-    icon: data.list[9].weather[0].icon,
-    temp: data.list[9].main.temp,
-    wind: data.list[9].wind.speed,
-    humidity: data.list[9].main.humidity,
+    date: data.list[13].dt_txt,
+    icon: data.list[13].weather[0].icon,
+    temp: data.list[13].main.temp,
+    wind: data.list[13].wind.speed,
+    humidity: data.list[13].main.humidity,
   },
   {
-    date: data.list[17].dt_txt,
-    icon: data.list[17].weather[0].icon,
-    temp: data.list[17].main.temp,
-    wind: data.list[17].wind.speed,
-    humidity: data.list[17].main.humidity,
+    date: data.list[21].dt_txt,
+    icon: data.list[21].weather[0].icon,
+    temp: data.list[21].main.temp,
+    wind: data.list[21].wind.speed,
+    humidity: data.list[21].main.humidity,
   },
   {
-    date: data.list[25].dt_txt,
-    icon: data.list[25].weather[0].icon,
-    temp: data.list[25].main.temp,
-    wind: data.list[25].wind.speed,
-    humidity: data.list[25].main.humidity,
+    date: data.list[29].dt_txt,
+    icon: data.list[29].weather[0].icon,
+    temp: data.list[29].main.temp,
+    wind: data.list[29].wind.speed,
+    humidity: data.list[29].main.humidity,
   },
   {
-    date: data.list[33].dt_txt,
-    icon: data.list[33].weather[0].icon,
-    temp: data.list[33].main.temp,
-    wind: data.list[33].wind.speed,
-    humidity: data.list[33].main.humidity,
+    date: data.list[37].dt_txt,
+    icon: data.list[37].weather[0].icon,
+    temp: data.list[37].main.temp,
+    wind: data.list[37].wind.speed,
+    humidity: data.list[37].main.humidity,
   }];
 
   for (let i = 0; i < forecastArr.length; i++) {
